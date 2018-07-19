@@ -105,9 +105,8 @@ let teams = [ teamSharks, teamDragons, teamRaptors]
 var experiencedPlayers: [[String: Any]] = []
 var inexperiencedPlayers: [[String: Any]] = []
 
-
 func sortByExperience(_ league: [[String: Any]]) {
-    // Sort players by experience
+    // Sort players in 2 groups by experience
     for player in league {
         if let hasSoccerExperience = player["hasSoccerExperience"] as? Bool {
             if hasSoccerExperience {
@@ -117,24 +116,29 @@ func sortByExperience(_ league: [[String: Any]]) {
             }
         }
     }
-    // Sort experienced players in 3 teams
-    for player in experiencedPlayers {
-        if teamDragons.count < teamSharks.count {
-            teamDragons.append(player)
-        } else if teamRaptors.count < teamDragons.count {
-            teamRaptors.append(player)
-        } else {
-            teamSharks.append(player)
+    // Find max index
+    let maxIndex = max(experiencedPlayers.count, inexperiencedPlayers.count)
+    // Sort players in 3 teams
+    for index in 0...maxIndex {
+        // Iterate through experiencedPlayers
+        if index < experiencedPlayers.count {
+            if teamDragons.count < teamSharks.count {
+                teamDragons.append(experiencedPlayers[index])
+            } else if teamRaptors.count < teamDragons.count {
+                teamRaptors.append(experiencedPlayers[index])
+            } else {
+                teamSharks.append(experiencedPlayers[index])
+            }
         }
-    }
-    // Sort inexperienced players in 3 teams
-    for player in inexperiencedPlayers {
-        if teamDragons.count < teamSharks.count {
-            teamDragons.append(player)
-        } else if teamRaptors.count < teamDragons.count {
-            teamRaptors.append(player)
-        } else {
-            teamSharks.append(player)
+        // Iterate through inexperiencedPlayers
+        if index < inexperiencedPlayers.count {
+            if teamDragons.count < teamSharks.count {
+                teamDragons.append(inexperiencedPlayers[index])
+            } else if teamRaptors.count < teamDragons.count {
+                teamRaptors.append(inexperiencedPlayers[index])
+            } else {
+                teamSharks.append(inexperiencedPlayers[index])
+            }
         }
     }
 }
