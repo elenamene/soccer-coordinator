@@ -96,14 +96,15 @@ let leaguePlayers: [[String: Any]] = [
 ]
 
 // Modeling teams
+
 var teamSharks: [[String: Any]] = []
 var teamDragons: [[String: Any]] = []
 var teamRaptors: [[String: Any]] = []
 
-let teams = [ teamSharks, teamDragons, teamRaptors]
-
 var experiencedPlayers: [[String: Any]] = []
 var inexperiencedPlayers: [[String: Any]] = []
+
+// Sorting
 
 func sortByExperience(_ league: [[String: Any]]) {
     // Sort players in 2 groups by experience
@@ -145,36 +146,58 @@ func sortByExperience(_ league: [[String: Any]]) {
 
 sortByExperience(leaguePlayers)
 
-teamRaptors.count
-teamDragons.count
-teamSharks.count
-print("Team Sharks: \(teamSharks)")
-print("Team Dragons: \(teamDragons)")
-print("Team Raptors: \(teamRaptors)")
+// Generate Guardians Letters
 
-//  As long as you provide the necessary information (player name, team name, guardian names, practice date/time), feel free to have fun with the content of the letter. The team practice dates/times are as follows:
+var letters: [String] = []
 
 let practiceDateDragons = "March 17, 1pm"
 let practiceDateSharks = "March 17, 3pm"
 let practiceDateRaptors = "March 18, 1pm"
 
-var message =
-"""
-Dear GuardiansName,
-playerName has been placed on teamName.
-The first team practice will be at the address below on practiceDateDragons.
-Thanks
-The soccer league coordinator
-"""
+let teams = [teamSharks, teamDragons, teamRaptors]
 
-for player in teamSharks {
-    print("""
-        Dear GuardiansName,
-        \(player) has been placed on teamName.
-        The first team practice will be at the address below on practiceDateDragons.
-        Thanks
-        The soccer league coordinator
-        """)
+func generateGuardiansLetters() {
+    // Generate letter for team Sharks
+    for player in teamSharks {
+        if let name = player["name"] as? String, let guardianNames = player["guardianNames"] as? String {
+            let letter = ("""
+                Dear \(guardianNames),
+                \(name) has been placed on team Sharks.
+                The first team practice will be at the soccer stadium on \(practiceDateSharks).
+                Thanks,
+                The soccer league coordinator
+                """)
+            letters.append(letter)
+        }
+    }
+    // Generate letter for team Dragons
+    for player in teamDragons {
+        if let name = player["name"] as? String, let guardianNames = player["guardianNames"] as? String {
+            let letter = ("""
+                Dear \(guardianNames),
+                \(name) has been placed on team Dragons.
+                The first team practice will be at the soccer stadium on \(practiceDateDragons).
+                Thanks,
+                The soccer league coordinator
+                """)
+            letters.append(letter)
+        }
+    }
+    // Generate letter for team Raptors
+    for player in teamRaptors {
+        if let name = player["name"] as? String, let guardianNames = player["guardianNames"] as? String {
+            let letter = ("""
+                Dear \(guardianNames),
+                \(name) has been placed on team Raptors.
+                The first team practice will be at the soccer stadium on \(practiceDateRaptors).
+                Thanks,
+                The soccer league coordinator
+                """)
+            letters.append(letter)
+        }
+    }
+    print(letters)
 }
 
-let letters: [String] = []
+generateGuardiansLetters()
+
