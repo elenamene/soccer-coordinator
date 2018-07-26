@@ -121,6 +121,7 @@ func sortPlayers(_ league: [[String: Any]]) {
         }
     }
     
+    // Sort players by height
     experiencedPlayers.sort { ($0["height"] as! Double) < ($1["height"] as! Double) }
     inexperiencedPlayers.sort { ($0["height"] as! Double) > ($1["height"] as! Double) }
     
