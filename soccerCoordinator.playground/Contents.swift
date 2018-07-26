@@ -30,12 +30,12 @@ let leaguePlayers: [[String: Any]] = [
         "guardianNames": "Charles and Sylvia Gill"
     ],
     [   "name": "Kimmy Stein",
-        "height": 41,
+        "height": 41.0,
         "hasSoccerExperience": false,
         "guardianNames": "Bill and Hillary Stein"
     ],
     [   "name": "Sammy Adams",
-        "height": 45,
+        "height": 45.0,
         "hasSoccerExperience": false,
         "guardianNames": "Jeff Adams"
     ],
@@ -122,9 +122,7 @@ func sortPlayers(_ league: [[String: Any]]) {
     }
     
     experiencedPlayers.sort { ($0["height"] as! Double) < ($1["height"] as! Double) }
-    // inexperiencedPlayers.sort { ($0["height"] as! Double) > ($1["height"] as! Double) }
-    // -> this last sorting somehow gives this error:
-    // Could not cast value of type 'Swift.Int' (0x11eee28c0) to 'Swift.Double' (0x11eee0cf0).
+    inexperiencedPlayers.sort { ($0["height"] as! Double) > ($1["height"] as! Double) }
     
     // Find max index between the 2 collections
     let maxIndex = max(experiencedPlayers.count, inexperiencedPlayers.count)
@@ -207,9 +205,6 @@ func generateGuardiansLetters() {
     print(letters)
 }
 
-sortPlayers(leaguePlayers)
-generateGuardiansLetters()
-
 // Check number of experienced players per team
 
 func calculateNumOfExperiencedPlayers(of teamName: String, from teamCollection: [[String: Any]]) {
@@ -227,10 +222,6 @@ func calculateNumOfExperiencedPlayers(of teamName: String, from teamCollection: 
     // Print final message
     print("\(teamName) has \(numOfExperiencedPlayers) experienced players")
 }
-
-calculateNumOfExperiencedPlayers(of: "Team Shark", from: teamSharks)
-calculateNumOfExperiencedPlayers(of: "Team Dragons", from: teamDragons)
-calculateNumOfExperiencedPlayers(of: "Team Raptors", from: teamRaptors)
 
 // Check that each team's average height is within 1.5 inch
 
@@ -250,9 +241,16 @@ func calculateAverageHeight(of teamName: String, from teamCollection: [[String: 
     print("\(teamName) average heights: \(averageHeight)")
 }
 
+// Run program
+
+sortPlayers(leaguePlayers)
+generateGuardiansLetters()
+
+calculateNumOfExperiencedPlayers(of: "Team Shark", from: teamSharks)
+calculateNumOfExperiencedPlayers(of: "Team Dragons", from: teamDragons)
+calculateNumOfExperiencedPlayers(of: "Team Raptors", from: teamRaptors)
+
 calculateAverageHeight(of: "Team Sharks", from: teamSharks)
 calculateAverageHeight(of: "Team Dragond", from: teamDragons)
 calculateAverageHeight(of: "Team Raptors", from: teamRaptors)
-
-
 
