@@ -1,7 +1,8 @@
 // Project 1
 // Soccer League Coordinator
 
-// Modeling players
+// Dictionary of players
+
 let leaguePlayers: [[String: Any]] = [
     [   "name": "Joe Smith",
         "height": 42.0,
@@ -95,19 +96,21 @@ let leaguePlayers: [[String: Any]] = [
     ],
 ]
 
-// Modeling teams
+// Creating teams for sorting
 
 var teamSharks: [[String: Any]] = []
 var teamDragons: [[String: Any]] = []
 var teamRaptors: [[String: Any]] = []
 
-var experiencedPlayers: [[String: Any]] = []
-var inexperiencedPlayers: [[String: Any]] = []
+// Sorting by experience and height
 
-// Sorting
-
-func sortByExperience(_ league: [[String: Any]]) {
-    // Sort players in 2 groups by experience
+func sortPlayers(_ league: [[String: Any]]) {
+    
+    // Create two collections based on experience
+    var experiencedPlayers: [[String: Any]] = []
+    var inexperiencedPlayers: [[String: Any]] = []
+    
+    // Divide the players in experienced and inexperienced
     for player in league {
         if let hasSoccerExperience = player["hasSoccerExperience"] as? Bool {
             if hasSoccerExperience {
@@ -117,10 +120,18 @@ func sortByExperience(_ league: [[String: Any]]) {
             }
         }
     }
-    // Find max index
+    
+    experiencedPlayers.sort { ($0["height"] as! Double) < ($1["height"] as! Double) }
+    // inexperiencedPlayers.sort { ($0["height"] as! Double) > ($1["height"] as! Double) }
+    // -> this last sorting somehow gives this error:
+    // Could not cast value of type 'Swift.Int' (0x11eee28c0) to 'Swift.Double' (0x11eee0cf0).
+    
+    // Find max index between the 2 collections
     let maxIndex = max(experiencedPlayers.count, inexperiencedPlayers.count)
+    
     // Sort players in 3 teams
     for index in 0...maxIndex {
+        
         // Iterate through experiencedPlayers
         if index < experiencedPlayers.count {
             if teamDragons.count < teamSharks.count {
@@ -131,6 +142,7 @@ func sortByExperience(_ league: [[String: Any]]) {
                 teamSharks.append(experiencedPlayers[index])
             }
         }
+        
         // Iterate through inexperiencedPlayers
         if index < inexperiencedPlayers.count {
             if teamDragons.count < teamSharks.count {
@@ -144,8 +156,6 @@ func sortByExperience(_ league: [[String: Any]]) {
     }
 }
 
-sortByExperience(leaguePlayers)
-
 // Generate Guardians Letters
 
 var letters: [String] = []
@@ -153,8 +163,6 @@ var letters: [String] = []
 let practiceDateDragons = "March 17, 1pm"
 let practiceDateSharks = "March 17, 3pm"
 let practiceDateRaptors = "March 18, 1pm"
-
-let teams = [teamSharks, teamDragons, teamRaptors]
 
 func generateGuardiansLetters() {
     // Generate letter for team Sharks
@@ -199,5 +207,52 @@ func generateGuardiansLetters() {
     print(letters)
 }
 
+sortPlayers(leaguePlayers)
 generateGuardiansLetters()
+
+// Check number of experienced players per team
+
+func calculateNumOfExperiencedPlayers(of teamName: String, from teamCollection: [[String: Any]]) {
+    var numOfExperiencedPlayers = 0
+    
+    // Iterate through the team's players
+    for player in teamCollection {
+        if let hasSoccerExperience = player["hasSoccerExperience"] as? Bool {
+            if hasSoccerExperience == true {
+                numOfExperiencedPlayers += 1
+            }
+        }
+    }
+    
+    // Print final message
+    print("\(teamName) has \(numOfExperiencedPlayers) experienced players")
+}
+
+calculateNumOfExperiencedPlayers(of: "Team Shark", from: teamSharks)
+calculateNumOfExperiencedPlayers(of: "Team Dragons", from: teamDragons)
+calculateNumOfExperiencedPlayers(of: "Team Raptors", from: teamRaptors)
+
+// Check that each team's average height is within 1.5 inch
+
+func calculateAverageHeight(of teamName: String, from teamCollection: [[String: Any]]) {
+    var sumOfHeights = 0.0
+    var averageHeight = 0.0
+    
+    // Iterate through the team's players
+    for player in teamCollection {
+        if let playerHeight = player["height"] as? Double {
+            sumOfHeights += playerHeight
+        }
+    }
+    averageHeight = sumOfHeights / Double(teamCollection.count)
+    
+    // Print final message
+    print("\(teamName) average heights: \(averageHeight)")
+}
+
+calculateAverageHeight(of: "Team Sharks", from: teamSharks)
+calculateAverageHeight(of: "Team Dragond", from: teamDragons)
+calculateAverageHeight(of: "Team Raptors", from: teamRaptors)
+
+
 
