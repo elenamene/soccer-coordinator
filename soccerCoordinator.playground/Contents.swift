@@ -125,32 +125,27 @@ func sortPlayers(_ league: [[String: Any]]) {
     experiencedPlayers.sort { ($0["height"] as! Double) < ($1["height"] as! Double) }
     inexperiencedPlayers.sort { ($0["height"] as! Double) > ($1["height"] as! Double) }
     
-    // Find max index between the 2 collections
-    let maxIndex = max(experiencedPlayers.count, inexperiencedPlayers.count)
-    
     // Sort players in 3 teams
-    for index in 0...maxIndex {
-        
-        // Iterate through experiencedPlayers
-        if index < experiencedPlayers.count {
-            if teamDragons.count < teamSharks.count {
-                teamDragons.append(experiencedPlayers[index])
-            } else if teamRaptors.count < teamDragons.count {
-                teamRaptors.append(experiencedPlayers[index])
-            } else {
-                teamSharks.append(experiencedPlayers[index])
-            }
+    
+    // Iterate through experiencedPlayers
+    for player in experiencedPlayers {
+        if teamDragons.count < teamSharks.count {
+            teamDragons.append(player)
+        } else if teamRaptors.count < teamDragons.count {
+            teamRaptors.append(player)
+        } else {
+            teamSharks.append(player)
         }
-        
-        // Iterate through inexperiencedPlayers
-        if index < inexperiencedPlayers.count {
-            if teamDragons.count < teamSharks.count {
-                teamDragons.append(inexperiencedPlayers[index])
-            } else if teamRaptors.count < teamDragons.count {
-                teamRaptors.append(inexperiencedPlayers[index])
-            } else {
-                teamSharks.append(inexperiencedPlayers[index])
-            }
+    }
+    
+    // Iterate through inexperiencedPlayers
+    for player in inexperiencedPlayers {
+        if teamDragons.count < teamSharks.count {
+            teamDragons.append(player)
+        } else if teamRaptors.count < teamDragons.count {
+            teamRaptors.append(player)
+        } else {
+            teamSharks.append(player)
         }
     }
 }
@@ -203,7 +198,14 @@ func generateGuardiansLetters() {
             letters.append(letter)
         }
     }
-    print(letters)
+}
+
+// Print letters
+
+func printLetters() {
+    for letter in letters {
+        print(letter)
+    }
 }
 
 // Check number of experienced players per team
@@ -255,3 +257,4 @@ calculateAverageHeight(of: "Team Sharks", from: teamSharks)
 calculateAverageHeight(of: "Team Dragond", from: teamDragons)
 calculateAverageHeight(of: "Team Raptors", from: teamRaptors)
 
+printLetters()
