@@ -3,7 +3,7 @@
 
 // Dictionary of players
 
-let leaguePlayers: [[String: Any]] = [
+let soccerLeague: [[String: Any]] = [
     [   "name": "Joe Smith",
         "height": 42.0,
         "hasSoccerExperience": true,
@@ -104,26 +104,33 @@ var teamRaptors: [[String: Any]] = []
 
 // Sorting by experience and height
 
-func sortPlayers(_ league: [[String: Any]]) {
+func sortPlayers(of league: [[String: Any]]) {
     
     // Create two collections based on experience
     var experiencedPlayers: [[String: Any]] = []
     var inexperiencedPlayers: [[String: Any]] = []
     
-    // Divide the players in experienced and inexperienced
+    // Divide the players in experienced and inexperienced players
     for player in league {
-        if let hasSoccerExperience = player["hasSoccerExperience"] as? Bool {
-            if hasSoccerExperience {
-                experiencedPlayers.append(player)
-            } else {
-                inexperiencedPlayers.append(player)
-            }
+        guard let hasSoccerExperience = player["hasSoccerExperience"] as? Bool else {
+            return
+        }
+        
+        if hasSoccerExperience {
+            experiencedPlayers.append(player)
+        } else {
+            inexperiencedPlayers.append(player)
         }
     }
     
-    // Sort players by height
-    experiencedPlayers.sort { ($0["height"] as! Double) < ($1["height"] as! Double) }
-    inexperiencedPlayers.sort { ($0["height"] as! Double) > ($1["height"] as! Double) }
+    // Sort players by height <
+    experiencedPlayers.sort {
+        ($0["height"] as! Double) < ($1["height"] as! Double)
+    }
+    // Sort players by height >
+    inexperiencedPlayers.sort {
+        ($0["height"] as! Double) > ($1["height"] as! Double)
+    }
     
     // Sort players in 3 teams
     
@@ -158,45 +165,34 @@ let practiceDateDragons = "March 17, 1pm"
 let practiceDateSharks = "March 17, 3pm"
 let practiceDateRaptors = "March 18, 1pm"
 
-func generateGuardiansLetters() {
-    // Generate letter for team Sharks
-    for player in teamSharks {
-        if let name = player["name"] as? String, let guardianNames = player["guardianNames"] as? String {
-            let letter = ("""
-                Dear \(guardianNames),
-                \(name) has been placed on team Sharks.
-                The first team practice will be at the soccer stadium on \(practiceDateSharks).
-                Thanks,
-                The soccer league coordinator
-                """)
-            letters.append(letter)
-        }
+
+func generateLetters(for team: [[String: Any]]) {
+    
+    // Select team name and date
+    var date: String = ""
+    var name: String = ""
+    switch team {
+    case teamSharks: name = "Sharks"; date = "March 17, 3pm"
+    case teamDragons: name = "Dragons"; date = "March 17, 1pm"
+    case teamRaptors: name = "Raptors"; date = "March 18, 1pm"
+    default: break
     }
-    // Generate letter for team Dragons
-    for player in teamDragons {
-        if let name = player["name"] as? String, let guardianNames = player["guardianNames"] as? String {
-            let letter = ("""
-                Dear \(guardianNames),
-                \(name) has been placed on team Dragons.
-                The first team practice will be at the soccer stadium on \(practiceDateDragons).
-                Thanks,
-                The soccer league coordinator
-                """)
-            letters.append(letter)
+    
+    // Iterate over each player in selected team
+    for player in team {
+        guard let name = player["name"] as? String, let guardianNames = player["guardianNames"] as? String else {
+            return
         }
-    }
-    // Generate letter for team Raptors
-    for player in teamRaptors {
-        if let name = player["name"] as? String, let guardianNames = player["guardianNames"] as? String {
-            let letter = ("""
-                Dear \(guardianNames),
-                \(name) has been placed on team Raptors.
-                The first team practice will be at the soccer stadium on \(practiceDateRaptors).
-                Thanks,
-                The soccer league coordinator
-                """)
-            letters.append(letter)
-        }
+        
+        let letter = ("""
+            Dear \(guardianNames),\n
+            \(name) has been placed on team \(teamName).
+            The first team practice will be at the soccer stadium on \(date).\n
+            Thanks,\n
+            The soccer league coordinator\n
+            """)
+        
+        letters.append(letter)
     }
 }
 
@@ -246,8 +242,8 @@ func calculateAverageHeight(of teamName: String, from teamCollection: [[String: 
 
 // Run program
 
-sortPlayers(leaguePlayers)
-generateGuardiansLetters()
+sortPlayers(of: soccerLeague)
+// -> generateLetters method
 
 calculateNumOfExperiencedPlayers(of: "Team Shark", from: teamSharks)
 calculateNumOfExperiencedPlayers(of: "Team Dragons", from: teamDragons)
