@@ -166,16 +166,16 @@ let practiceDateSharks = "March 17, 3pm"
 let practiceDateRaptors = "March 18, 1pm"
 
 
-func generateLetters(for team: [[String: Any]]) {
+func generateLetters(forTeam team: [[String: Any]], withName teamName: String) {
     
     // Select team name and date
     var date: String = ""
-    var name: String = ""
-    switch team {
-    case teamSharks: name = "Sharks"; date = "March 17, 3pm"
-    case teamDragons: name = "Dragons"; date = "March 17, 1pm"
-    case teamRaptors: name = "Raptors"; date = "March 18, 1pm"
-    default: break
+    
+    switch teamName {
+    case "Sharks": date = "March 17, 3pm"
+    case "Dragons": date = "March 17, 1pm"
+    case "Raptors": date = "March 18, 1pm"
+    default: print("name of team invalid")
     }
     
     // Iterate over each player in selected team
@@ -206,20 +206,20 @@ func printLetters() {
 
 // Check number of experienced players per team
 
-func calculateNumOfExperiencedPlayers(of teamName: String, from teamCollection: [[String: Any]]) {
-    var numOfExperiencedPlayers = 0
+func numberOfExperiencedPlayers(of teamName: String, from teamCollection: [[String: Any]]) {
+    var experiencedPlayers = 0
     
     // Iterate through the team's players
     for player in teamCollection {
         if let hasSoccerExperience = player["hasSoccerExperience"] as? Bool {
             if hasSoccerExperience == true {
-                numOfExperiencedPlayers += 1
+                experiencedPlayers += 1
             }
         }
     }
     
     // Print final message
-    print("\(teamName) has \(numOfExperiencedPlayers) experienced players")
+    print("\(teamName) has \(experiencedPlayers) experienced players")
 }
 
 // Check that each team's average height is within 1.5 inch
@@ -243,11 +243,13 @@ func calculateAverageHeight(of teamName: String, from teamCollection: [[String: 
 // Run program
 
 sortPlayers(of: soccerLeague)
-// -> generateLetters method
+generateLetters(forTeam: teamSharks, withName: "Sharks")
+generateLetters(forTeam: teamDragons, withName: "Dragons")
+generateLetters(forTeam: teamRaptors, withName: "Raptors")
 
-calculateNumOfExperiencedPlayers(of: "Team Shark", from: teamSharks)
-calculateNumOfExperiencedPlayers(of: "Team Dragons", from: teamDragons)
-calculateNumOfExperiencedPlayers(of: "Team Raptors", from: teamRaptors)
+numberOfExperiencedPlayers(of: "Team Sharks", from: teamSharks)
+numberOfExperiencedPlayers(of: "Team Dragons", from: teamDragons)
+numberOfExperiencedPlayers(of: "Team Raptors", from: teamRaptors)
 
 calculateAverageHeight(of: "Team Sharks", from: teamSharks)
 calculateAverageHeight(of: "Team Dragond", from: teamDragons)
